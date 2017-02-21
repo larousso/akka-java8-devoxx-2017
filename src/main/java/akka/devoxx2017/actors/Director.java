@@ -57,7 +57,7 @@ public class Director extends AbstractLoggingActor {
                 .match(IAmIn.class, msg -> {
                     log().info("He's OK !!!");
                     timeout.forEach(Cancellable::cancel);
-                    Messages.AMovie movie = new Messages.AMovie(scenario, "Bill Murray");
+                    Messages.AMovie movie = Messages.AMovie(scenario, "Bill Murray");
                     context().parent().tell(movie, self());
                     replyTo.tell(movie, self());
                     context().stop(self());
@@ -95,12 +95,11 @@ public class Director extends AbstractLoggingActor {
     public static class MovieException extends RuntimeException {
 
         public final String scenario;
+        
         public MovieException(String message, String scenario) {
             super(message);
             this.scenario = scenario;
         }
-
-
     }
 
     public static Scenario Scenario(String scenario) {
