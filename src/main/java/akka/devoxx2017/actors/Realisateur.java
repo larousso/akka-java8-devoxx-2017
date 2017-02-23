@@ -12,15 +12,17 @@ import akka.devoxx2017.messages.Messages;
 public class Realisateur extends AbstractLoggingActor {
 
     private final ActorRef repondeurDeBillMurray;
+    private final ActorRef replyTo;
     private final String scenario;
 
 
-    public static Props props(ActorRef repondeur, String scenario) {
-        return Props.create(Realisateur.class, () -> new Realisateur(repondeur, scenario));
+    public static Props props(ActorRef repondeur, ActorRef replyTo, String scenario) {
+        return Props.create(Realisateur.class, () -> new Realisateur(repondeur, replyTo, scenario));
     }
 
-    private Realisateur(ActorRef repondeurDeBillMurray, String scenario) {
+    private Realisateur(ActorRef repondeurDeBillMurray, ActorRef replyTo, String scenario) {
         this.repondeurDeBillMurray = repondeurDeBillMurray;
+        this.replyTo = replyTo;
         this.scenario = scenario;
     }
 
@@ -38,16 +40,17 @@ public class Realisateur extends AbstractLoggingActor {
                 })
                 .match(Messages.JeSuisDAccord.class, m -> {
                     log().info("Il est d'accord !!!");
-                    context().parent().tell(Messages.Film(m.scenario, "Bill Murray"), self());
+                    replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Bill Murray"), self());
                     context().stop(self());
                 })
                 .match(Messages.AllezVousFaire.class, m -> {
-                    log().info("Il n'est pas d'accord, je prend Ben Affleck ...");
-                    context().parent().tell(Messages.Film(m.scenario, "Ben Affleck"), self());
+                    log().info("Il n'est pas d'accord, je prends Ben Affleck ...");
+                    replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Ben Affleck"), self());
                     context().stop(self());
                 })
                 .matchEquals(ReceiveTimeout.getInstance(), m -> {
-
+                    log().info("Il n'a pas répondu :(, je prends Ben Affleck ...");
+                    replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Ben Affleck"), self());
                 })
                 .build();
     }
