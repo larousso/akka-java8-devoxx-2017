@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Created by adelegue on 20/02/2017.
  */
-public class ScenariiGenerator {
+public class LucBessonScenarioGenerator {
 
     private static List<String> list1 = List.of("Un taxi", "Un chinois", "Un yamakazi");
     private static List<String> list2 = List.of("protege", "pête la gueule à");
