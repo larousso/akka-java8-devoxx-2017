@@ -38,7 +38,7 @@ public class Producteur extends AbstractLoggingActor {
         return receiveBuilder()
                 .matchEquals(Messages.FaitMoiUnFilm, m -> {
                     String scenario = LucBessonScenarioGenerator.nextScenario();
-                    ActorRef realisateur = context().system().actorOf(Realisateur.props(repondeurDeBillMurray, scenario));
+                    ActorRef realisateur = context().actorOf(Realisateur.props(repondeurDeBillMurray, scenario));
                     //TODO surveiller le realisateur
                 })
                 .match(Messages.Film.class, m -> {
