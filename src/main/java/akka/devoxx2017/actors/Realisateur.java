@@ -41,22 +41,29 @@ public class Realisateur extends AbstractLoggingActor {
                 .match(Messages.JeSuisDAccord.class, m -> {
                     log().info("Il est d'accord !!!");
                     replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Bill Murray"), self());
+                    //TODO Gérer le timeout
                     context().stop(self());
                 })
                 .match(Messages.AllezVousFaire.class, m -> {
                     log().info("Il n'est pas d'accord, je prends Ben Affleck ...");
                     replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Ben Affleck"), self());
+                    //TODO Gérer le timeout
                     context().stop(self());
                 })
                 .matchEquals(ReceiveTimeout.getInstance(), m -> {
-                    log().info("Il n'a pas répondu :(, je prends Ben Affleck ...");
-                    replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Ben Affleck"), self());
+                    log().info("Il n'a pas répondu :(");
+                    throw new MovieException("Il n'a pas répondu :(", Messages.Scenario(scenario));
                 })
                 .build();
     }
 
     @Override
     public void preStart() throws Exception {
+        self().tell(Messages.ChercheUnActeur, self());
+    }
+
+    @Override
+    public void postRestart(Throwable reason) throws Exception {
         self().tell(Messages.ChercheUnActeur, self());
     }
 
