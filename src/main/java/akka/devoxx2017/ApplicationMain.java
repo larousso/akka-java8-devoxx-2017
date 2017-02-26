@@ -12,6 +12,14 @@ public class ApplicationMain {
      * @chanksleroux
      * https://github.com/larousso
      *
+     * AKKA :
+     * - Actors
+     * - Cluster
+     * - Persistence
+     * - Distributed data
+     * - Streams
+     * - HTTP
+     *
      * @param args
      */
     public static void main(String[] args) {
