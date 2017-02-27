@@ -28,7 +28,7 @@ public interface Messages {
 
         @Override
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                     .append("scenario", scenario)
                     .toString();
         }
@@ -48,7 +48,7 @@ public interface Messages {
 
         @Override
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                     .append("scenario", scenario)
                     .toString();
         }
@@ -100,7 +100,7 @@ public interface Messages {
 
         @Override
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                     .append("message", message)
                     .append("scenario", scenario)
                     .append("numeroTel", numeroTel)
@@ -123,7 +123,7 @@ public interface Messages {
 
         @Override
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                     .append("scenario", scenario)
                     .toString();
         }
@@ -147,7 +147,7 @@ public interface Messages {
 
         @Override
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                     .append("scenario", scenario)
                     .append("acteur", acteur)
                     .toString();
