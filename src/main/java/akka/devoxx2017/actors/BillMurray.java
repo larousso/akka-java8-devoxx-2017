@@ -29,7 +29,7 @@ public class BillMurray extends AbstractLoggingActor {
                     repondeur.tell(Messages.MessageSuivant, self());
                 })
                 .matchEquals(Messages.PasDeMessage, m -> {
-                    //TODO : faire qqc
+                    //TODO
                 })
                 .build();
     }
@@ -37,6 +37,6 @@ public class BillMurray extends AbstractLoggingActor {
 
     @Override
     public void preStart() throws Exception {
-        //TODO : faire qqc
+        //TODO : poll du répondeur
     }
 }
