@@ -26,13 +26,13 @@ public class ApplicationMain {
      * https://github.com/larousso
      *
      * AKKA :
-     * - Actors
-     * - Cluster
-     * - Persistence
-     * - Distributed data
-     * - Streams
-     * - HTTP
-     * - Alpakka
+     * - Actors: concurrence, parallelisation, resistence aux pannes, asynchrone, non bloquant
+     * - Cluster: Messaging à travers le réseau, singleton, sharding ...
+     * - Persistence: Event sourcing / CQRS
+     * - Distributed data: CRDT
+     * - Streams: reactive streams
+     * - HTTP: REST / WebSocket
+     * - Alpakka: Connecteurs pour akka streams, kafka, AMQP, JMS, fichiers, mongo, cassandra ...
      *
      * @param args
      */
