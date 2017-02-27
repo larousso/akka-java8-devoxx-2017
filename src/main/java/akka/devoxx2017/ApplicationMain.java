@@ -26,7 +26,7 @@ public class ApplicationMain {
      * https://github.com/larousso
      *
      * AKKA :
-     * - Actors: concurrence, parallelisation, resistence aux pannes, asynchrone, non bloquant
+     * - Actors: concurrence, parallélisation, résistance aux pannes, asynchrone, non bloquant
      * - Cluster: Messaging à travers le réseau, singleton, sharding ...
      * - Persistence: Event sourcing / CQRS
      * - Distributed data: CRDT
