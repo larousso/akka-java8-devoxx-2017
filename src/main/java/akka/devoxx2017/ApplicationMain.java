@@ -32,13 +32,12 @@ public class ApplicationMain {
      * - Distributed data
      * - Streams
      * - HTTP
+     * - Alpakka
      *
      * @param args
      */
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MyActorSystem");
-
-
 
         ActorRef repondeur;
 
