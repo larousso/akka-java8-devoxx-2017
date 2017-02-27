@@ -31,7 +31,7 @@ public class Producteur extends AbstractLoggingActor {
                     //TODO surveiller le realisateur
                 })
                 .match(Terminated.class, m -> {
-                    log().info("Acteur terminé : {}", m.getActor().path());
+                    log().info("Film terminé : {}", m.getActor().path());
                 })
                 .build();
     }

@@ -39,15 +39,10 @@ public class ApplicationMain {
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MyActorSystem");
 
-        ActorRef repondeur;
-
-
-//        ActorRef producteur = system.actorOf(Producteur.props(repondeur), "producteur");
+//        Source<Messages.FaitMoiUnFilm, NotUsed> range = Source.repeat(Messages.FaitMoiUnFilm);
 //
-//        Source<Integer, NotUsed> range = Source.range(0, 20);
-//
-//        Flow<Integer, Messages.Film, NotUsed> films = Flow.<Integer>create()
-//                .map(any -> Messages.FaitMoiUnFilm)
+//        Flow<Messages.FaitMoiUnFilm, Messages.Film, NotUsed> films = Flow.<Messages.FaitMoiUnFilm>create()
+//                .take(20)
 //                .mapAsync(10, m ->
 //                        ask(producteur, m, 10000).thenApply(Messages.Film.class::cast)
 //                );
@@ -62,6 +57,7 @@ public class ApplicationMain {
 //            if(e != null) {
 //                e.printStackTrace();
 //            }
+//            System.out.println("Voici les Films : ");
 //            f.forEach(System.out::println);
 //        });
 
