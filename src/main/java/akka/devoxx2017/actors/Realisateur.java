@@ -51,8 +51,8 @@ public class Realisateur extends AbstractLoggingActor {
                     context().stop(self());
                 })
                 .matchEquals(ReceiveTimeout.getInstance(), m -> {
-                    log().info("Il n'a pas répondu :(");
-                    throw new MovieException("Il n'a pas répondu :(", Messages.Scenario(scenario));
+                    log().info("Il n'a pas répondu :(, je prends Ben Affleck ...");
+                    replyTo.tell(Messages.Film(Messages.Scenario(scenario), "Ben Affleck"), self());
                 })
                 .build();
     }

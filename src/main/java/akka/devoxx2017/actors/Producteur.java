@@ -22,17 +22,6 @@ public class Producteur extends AbstractLoggingActor {
         this.repondeurDeBillMurray = repondeurDeBillMurray;
     }
 
-//    @Override
-//    public SupervisorStrategy supervisorStrategy() {
-//        return new OneForOneStrategy(1, FiniteDuration.Zero(), e -> {
-//            if(e instanceof Realisateur.MovieException) {
-//                return SupervisorStrategy.restart();
-//            } else {
-//                return SupervisorStrategy.stop();
-//            }
-//        });
-//    }
-
     @Override
     public Receive createReceive() {
         return receiveBuilder()
