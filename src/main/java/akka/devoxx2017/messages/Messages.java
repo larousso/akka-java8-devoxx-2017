@@ -108,6 +108,31 @@ public interface Messages {
         }
     }
 
+    static NouveauMessageSurRepondeur NouveauMessageSurRepondeur(String message, Scenario scenario) {
+        return new NouveauMessageSurRepondeur(message, scenario);
+    }
+
+    class NouveauMessageSurRepondeur {
+
+        public final String message;
+
+        public final Scenario scenario;
+
+        public NouveauMessageSurRepondeur(String message, Scenario scenario) {
+            this.message = message;
+            this.scenario = scenario;
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    .append("message", message)
+                    .append("scenario", scenario)
+                    .toString();
+        }
+    }
+
+
 
 
     static Scenario Scenario(String scenario) {
