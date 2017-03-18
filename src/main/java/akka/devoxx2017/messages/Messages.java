@@ -170,6 +170,13 @@ public interface Messages {
             this.acteur = acteur;
         }
 
+        public String json() {
+            return "{" +
+                    "   \\”acteur\\”: \\”"+acteur+"\\”, " +
+                    "   \\”scenario\\”: \\”"+scenario.scenario+"\\” " +
+                    "}";
+        }
+
         @Override
         public String toString() {
             return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
