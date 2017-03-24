@@ -13,6 +13,7 @@ import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
 import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
+import akka.pattern.PatternsCS;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
@@ -21,6 +22,7 @@ import akka.stream.javadsl.Source;
 import de.heikoseeberger.akkasse.japi.EventStreamMarshalling;
 import de.heikoseeberger.akkasse.japi.ServerSentEvent;
 import javaslang.API;
+import javaslang.collection.List;
 
 import java.util.concurrent.CompletionStage;
 
@@ -52,7 +54,6 @@ public class ApplicationMain extends AllDirectives {
      */
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MyActorSystem");
-
 
 //        Source<ServerSentEvent, NotUsed> films = Source
 //                .repeat(Messages.FaitMoiUnFilm)
@@ -99,5 +100,11 @@ public class ApplicationMain extends AllDirectives {
                 ))
                 .exceptionally(e -> Messages.Film(message.scenario, "Ben Affleck"));
     }
+
+
+    private static void printFilms(java.util.List<Messages.Film> f) {
+        System.out.println("Films : \n" + List.ofAll(f).mkString("\n"));
+    }
+
 
 }
