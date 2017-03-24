@@ -15,10 +15,7 @@ import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
 import akka.pattern.PatternsCS;
 import akka.stream.ActorMaterializer;
-import akka.stream.javadsl.Flow;
-import akka.stream.javadsl.Keep;
-import akka.stream.javadsl.Sink;
-import akka.stream.javadsl.Source;
+import akka.stream.javadsl.*;
 import de.heikoseeberger.akkasse.japi.EventStreamMarshalling;
 import de.heikoseeberger.akkasse.japi.ServerSentEvent;
 import javaslang.API;
@@ -28,7 +25,6 @@ import java.util.concurrent.CompletionStage;
 
 import static akka.pattern.PatternsCS.ask;
 import static javaslang.API.*;
-import static javaslang.Patterns.*;
 import static javaslang.Predicates.*;
 
 public class ApplicationMain extends AllDirectives {
@@ -55,15 +51,14 @@ public class ApplicationMain extends AllDirectives {
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MyActorSystem");
 
+
+
+
 //        Source<ServerSentEvent, NotUsed> films = Source
 //                .repeat(Messages.FaitMoiUnFilm)
 //                .map(f -> Messages.Scenario(LucBessonScenarioGenerator.nextScenario()))
 //                .map(s -> Messages.NouveauMessageSurRepondeur("Hey bill", s))
-//                .mapAsyncUnordered(10, m ->
-//                        demanderABillMurray(repondeur, m)
-//                                .thenApply(e -> Messages.Film(m.scenario, "Bill Murray"))
-//                                .exceptionally(e -> Messages.Film(m.scenario, "Ben affleck"))
-//                )
+//                .mapAsyncUnordered(10, m -> demanderABillMurray(repondeur, m))
 //                .map(f -> ServerSentEvent.create(f.json()));
 //
 //        ActorMaterializer materializer = ActorMaterializer.create(system);
@@ -77,7 +72,7 @@ public class ApplicationMain extends AllDirectives {
 //                ConnectHttp.toHost("localhost", 8080),
 //                materializer
 //        );
-//
+
 
 
     }
