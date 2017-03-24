@@ -4,6 +4,9 @@ import akka.actor.AbstractLoggingActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.devoxx2017.messages.Messages;
+import scala.concurrent.duration.FiniteDuration;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by adelegue on 22/02/2017.
@@ -29,7 +32,13 @@ public class BillMurray extends AbstractLoggingActor {
                     repondeur.tell(Messages.MessageSuivant, self());
                 })
                 .matchEquals(Messages.PasDeMessage, m -> {
-                    //TODO
+                    context().system().scheduler().scheduleOnce(
+                            FiniteDuration.create(1, TimeUnit.SECONDS),
+                            repondeur,
+                            Messages.MessageSuivant,
+                            context().dispatcher(),
+                            self()
+                    );
                 })
                 .build();
     }
@@ -37,6 +46,12 @@ public class BillMurray extends AbstractLoggingActor {
 
     @Override
     public void preStart() throws Exception {
-        //TODO : poll du répondeur
+        context().system().scheduler().scheduleOnce(
+                FiniteDuration.create(1, TimeUnit.SECONDS),
+                repondeur,
+                Messages.MessageSuivant,
+                context().dispatcher(),
+                self()
+        );
     }
 }
