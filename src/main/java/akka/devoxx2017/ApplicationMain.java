@@ -4,6 +4,7 @@ import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.devoxx2017.actors.BillMurray;
+import akka.devoxx2017.actors.Repondeur;
 import akka.devoxx2017.messages.Messages;
 import akka.devoxx2017.utils.LucBessonScenarioGenerator;
 import akka.http.javadsl.ConnectHttp;
@@ -19,10 +20,14 @@ import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import de.heikoseeberger.akkasse.japi.EventStreamMarshalling;
 import de.heikoseeberger.akkasse.japi.ServerSentEvent;
+import javaslang.API;
 
 import java.util.concurrent.CompletionStage;
 
 import static akka.pattern.PatternsCS.ask;
+import static javaslang.API.*;
+import static javaslang.Patterns.*;
+import static javaslang.Predicates.*;
 
 public class ApplicationMain extends AllDirectives {
 
@@ -86,12 +91,13 @@ public class ApplicationMain extends AllDirectives {
         );
     }
 
-    private static CompletionStage<Object> demanderABillMurray(ActorRef repondeur, Messages.NouveauMessageSurRepondeur message) {
-        return ask(
-                repondeur,
-                message,
-                1000
-        );
+    private static CompletionStage<Messages.Film> demanderABillMurray(ActorRef repondeur, Messages.NouveauMessageSurRepondeur message) {
+        return ask(repondeur, message, 1000)
+                .thenApply(m -> Match(m).of(
+                    Case(instanceOf(Messages.JeSuisDAccord.class), Messages.Film(message.scenario, "Bill Murray")),
+                    Case(instanceOf(Messages.AllezVousFaire.class), Messages.Film(message.scenario, "Ben Affleck"))
+                ))
+                .exceptionally(e -> Messages.Film(message.scenario, "Ben Affleck"));
     }
 
 }
