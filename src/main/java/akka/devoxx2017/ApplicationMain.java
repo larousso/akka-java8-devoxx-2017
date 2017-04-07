@@ -51,27 +51,43 @@ public class ApplicationMain extends AllDirectives {
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MyActorSystem");
 
+        ActorRef repondeur = system.actorOf(Repondeur.props(), "repondeur");
 
+        system.actorOf(BillMurray.props(repondeur), "BillMurray");
 
-
-//        Source<ServerSentEvent, NotUsed> films = Source
-//                .repeat(Messages.FaitMoiUnFilm)
-//                .map(f -> Messages.Scenario(LucBessonScenarioGenerator.nextScenario()))
-//                .map(s -> Messages.NouveauMessageSurRepondeur("Hey bill", s))
+//
+//        RunnableGraph<CompletionStage<java.util.List<Messages.Film>>> graph = Source.repeat(Messages.FaitMoiUnFilm)
+//                .map(m -> Messages.Scenario(LucBessonScenarioGenerator.nextScenario()))
+//                .map(s -> Messages.NouveauMessageSurRepondeur("Hey", s))
 //                .mapAsyncUnordered(10, m -> demanderABillMurray(repondeur, m))
-//                .map(f -> ServerSentEvent.create(f.json()));
+//                .take(20)
+//                .toMat(Sink.seq(), Keep.right());
 //
-//        ActorMaterializer materializer = ActorMaterializer.create(system);
+//        CompletionStage<java.util.List<Messages.Film>> run = graph.run(ActorMaterializer.create(system));
 //
-//        // curl http://localhost:8080/films
-//        ApplicationMain app = new ApplicationMain();
-//
-//        final Http http = Http.get(system);
-//        http.bindAndHandle(
-//                app.createRoute(films).flow(system, materializer),
-//                ConnectHttp.toHost("localhost", 8080),
-//                materializer
-//        );
+//        run.whenComplete((f, e) -> {
+//            printFilms(f);
+//        });
+
+
+        Source<ServerSentEvent, NotUsed> films = Source
+                .repeat(Messages.FaitMoiUnFilm)
+                .map(f -> Messages.Scenario(LucBessonScenarioGenerator.nextScenario()))
+                .map(s -> Messages.NouveauMessageSurRepondeur("Hey bill", s))
+                .mapAsyncUnordered(10, m -> demanderABillMurray(repondeur, m))
+                .map(f -> ServerSentEvent.create(f.json()));
+
+        ActorMaterializer materializer = ActorMaterializer.create(system);
+
+        // curl http://localhost:8080/films
+        ApplicationMain app = new ApplicationMain();
+
+        final Http http = Http.get(system);
+        http.bindAndHandle(
+                app.createRoute(films).flow(system, materializer),
+                ConnectHttp.toHost("localhost", 8080),
+                materializer
+        );
 
 
 
