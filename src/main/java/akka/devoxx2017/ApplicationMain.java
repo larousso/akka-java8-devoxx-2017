@@ -4,6 +4,7 @@ import akka.NotUsed;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.devoxx2017.actors.BillMurray;
+import akka.devoxx2017.actors.Producteur;
 import akka.devoxx2017.actors.Repondeur;
 import akka.devoxx2017.messages.Messages;
 import akka.devoxx2017.utils.LucBessonScenarioGenerator;
@@ -55,26 +56,17 @@ public class ApplicationMain extends AllDirectives {
 
         system.actorOf(BillMurray.props(repondeur), "BillMurray");
 
-//
-//        RunnableGraph<CompletionStage<java.util.List<Messages.Film>>> graph = Source.repeat(Messages.FaitMoiUnFilm)
-//                .map(m -> Messages.Scenario(LucBessonScenarioGenerator.nextScenario()))
-//                .map(s -> Messages.NouveauMessageSurRepondeur("Hey", s))
-//                .mapAsyncUnordered(10, m -> demanderABillMurray(repondeur, m))
-//                .take(20)
-//                .toMat(Sink.seq(), Keep.right());
-//
-//        CompletionStage<java.util.List<Messages.Film>> run = graph.run(ActorMaterializer.create(system));
-//
-//        run.whenComplete((f, e) -> {
-//            printFilms(f);
-//        });
-
+        ActorRef producteur = system.actorOf(Producteur.props(repondeur), "Producteur");
 
         Source<ServerSentEvent, NotUsed> films = Source
                 .repeat(Messages.FaitMoiUnFilm)
-                .map(f -> Messages.Scenario(LucBessonScenarioGenerator.nextScenario()))
-                .map(s -> Messages.NouveauMessageSurRepondeur("Hey bill", s))
-                .mapAsyncUnordered(10, m -> demanderABillMurray(repondeur, m))
+                .mapAsync(2, m -> ask(producteur, m, 20000)
+                        .thenApply(Messages.Film.class::cast)
+                        .exceptionally(e -> {
+                            System.out.println(e.getMessage());
+                            return Messages.Film(Messages.Scenario("----"), "Ben Affleck");
+                        })
+                )
                 .map(f -> ServerSentEvent.create(f.json()));
 
         ActorMaterializer materializer = ActorMaterializer.create(system);
@@ -88,8 +80,6 @@ public class ApplicationMain extends AllDirectives {
                 ConnectHttp.toHost("localhost", 8080),
                 materializer
         );
-
-
 
     }
 
