@@ -5,7 +5,6 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.devoxx2017.actors.BillMurray;
 import akka.devoxx2017.actors.Producteur;
-import akka.devoxx2017.actors.Repondeur;
 import akka.devoxx2017.messages.Messages;
 import akka.devoxx2017.utils.LucBessonScenarioGenerator;
 import akka.http.javadsl.ConnectHttp;
@@ -52,34 +51,29 @@ public class ApplicationMain extends AllDirectives {
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MyActorSystem");
 
-        ActorRef repondeur = system.actorOf(Repondeur.props(), "repondeur");
 
-        system.actorOf(BillMurray.props(repondeur), "BillMurray");
-
-        ActorRef producteur = system.actorOf(Producteur.props(repondeur), "Producteur");
-
-        Source<ServerSentEvent, NotUsed> films = Source
-                .repeat(Messages.FaitMoiUnFilm)
-                .mapAsync(2, m -> ask(producteur, m, 20000)
-                        .thenApply(Messages.Film.class::cast)
-                        .exceptionally(e -> {
-                            System.out.println(e.getMessage());
-                            return Messages.Film(Messages.Scenario("----"), "Ben Affleck");
-                        })
-                )
-                .map(f -> ServerSentEvent.create(f.json()));
-
-        ActorMaterializer materializer = ActorMaterializer.create(system);
-
-        // curl http://localhost:8080/films
-        ApplicationMain app = new ApplicationMain();
-
-        final Http http = Http.get(system);
-        http.bindAndHandle(
-                app.createRoute(films).flow(system, materializer),
-                ConnectHttp.toHost("localhost", 8080),
-                materializer
-        );
+//        Source<ServerSentEvent, NotUsed> films = Source
+//                .repeat(Messages.FaitMoiUnFilm)
+//                .mapAsync(2, m -> ask(producteur, m, 20000)
+//                        .thenApply(Messages.Film.class::cast)
+//                        .exceptionally(e -> {
+//                            System.out.println(e.getMessage());
+//                            return Messages.Film(Messages.Scenario("----"), "Ben Affleck");
+//                        })
+//                )
+//                .map(f -> ServerSentEvent.create(f.json()));
+//
+//        ActorMaterializer materializer = ActorMaterializer.create(system);
+//
+//        // curl http://localhost:8080/films
+//        ApplicationMain app = new ApplicationMain();
+//
+//        final Http http = Http.get(system);
+//        http.bindAndHandle(
+//                app.createRoute(films).flow(system, materializer),
+//                ConnectHttp.toHost("localhost", 8080),
+//                materializer
+//        );
 
     }
 
